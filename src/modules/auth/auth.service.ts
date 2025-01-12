@@ -5,7 +5,6 @@ import { TokenService } from '../token/token.service';
 import { CreateUserDTO } from '../user/dto';
 import { UserService } from '../user/user.service';
 import { UserLoginDTO } from './dto';
-import { AuthUserResponce } from './response';
 
 @Injectable()
 export class AuthService {
@@ -20,7 +19,7 @@ export class AuthService {
     return this.userService.createUser(dto);
   }
 
-  async loginUsers(dto: UserLoginDTO): Promise<AuthUserResponce> {
+  async loginUsers(dto: UserLoginDTO): Promise<any> {
     const existUser = await this.userService.findUserByEmail(dto.email);
     if (!existUser) throw new BadRequestException(AppError.USER_NOT_EXIST);
     const validatePassword = await bcrypt.compare(
@@ -30,6 +29,6 @@ export class AuthService {
     if (!validatePassword) throw new BadRequestException(AppError.WRONG_DATA);
     const user = await this.userService.publicUser(dto.email);
     const token = await this.tokenService.generateJwtToken(user);
-    return { ...user, token };
+    return { user, token };
   }
 }
