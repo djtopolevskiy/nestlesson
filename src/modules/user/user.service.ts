@@ -2,12 +2,12 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import * as bcrypt from 'bcrypt';
 import { CreateUserDTO, UpdateUserDTO } from './dto';
-import { user } from './models/user.model';
+import { User } from './models/user.model';
 
 @Injectable()
 export class UserService {
   constructor(
-    @InjectModel(user) private readonly userRepository: typeof user,
+    @InjectModel(User) private readonly userRepository: typeof User,
   ) {}
 
   async hashPassword(password: string) {
