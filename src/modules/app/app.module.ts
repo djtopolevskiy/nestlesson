@@ -2,12 +2,14 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { SequelizeModule } from '@nestjs/sequelize';
 import configurations from 'src/configurations';
-import { user } from 'src/modules/user/models/user.model';
+import { User } from 'src/modules/user/models/user.model';
 import { UserModule } from 'src/modules/user/user.module';
 import { AuthModule } from '../auth/auth.module';
 import { TokenModule } from '../token/token.module';
+import { WatchlistModule } from '../watchlist/watchlist.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { Watchlist } from '../watchlist/models/watchlist.model';
 
 @Module({
   imports: [
@@ -27,12 +29,13 @@ import { AppService } from './app.service';
         database: configService.get('db_name'),
         autoLoadModels: true,
         synchronize: true,
-        models: [user],
+        models: [User, Watchlist],
       }),
     }),
     UserModule,
     AuthModule,
     TokenModule,
+    WatchlistModule,
   ],
   controllers: [AppController],
   providers: [AppService],
