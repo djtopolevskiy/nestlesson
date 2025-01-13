@@ -5,6 +5,7 @@ import { TokenService } from '../token/token.service';
 import { CreateUserDTO } from '../user/dto';
 import { UserService } from '../user/user.service';
 import { UserLoginDTO } from './dto';
+import { AuthUserResponce } from './response';
 
 @Injectable()
 export class AuthService {
@@ -19,7 +20,7 @@ export class AuthService {
     return this.userService.createUser(dto);
   }
 
-  async loginUsers(dto: UserLoginDTO): Promise<any> {
+  async loginUsers(dto: UserLoginDTO): Promise<AuthUserResponce> {
     const existUser = await this.userService.findUserByEmail(dto.email);
     if (!existUser) throw new BadRequestException(AppError.USER_NOT_EXIST);
     const validatePassword = await bcrypt.compare(
